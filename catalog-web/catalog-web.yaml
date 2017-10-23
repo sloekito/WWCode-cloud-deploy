@@ -1,0 +1,189 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Catalog web instance'
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  DBHostName:
+    Default: Database Instance Host Name
+    Description: MySQL database hostname
+    Type: String
+  DBName:
+    Default: MyDatabase
+    Description: MySQL database name
+    Type: String
+  DBUser:
+    NoEcho: 'true'
+    Description: Username for MySQL database access
+    Type: String
+  DBPassword:
+    NoEcho: 'true'
+    Description: Password for MySQL database access
+    Type: String
+  ImageId:
+    Default: ami-e689729e
+    Description: Amazon Machine Image ID (the OS version). Defaulted to the Amazon Linux AMI in us-west-2.
+    Type: String
+  KeyName:
+    Default: wwcode.pem
+    Description: My Keypair to SSH to EC2 instance. Must be pre-created.
+    Type: String
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t1.micro
+      - t2.nano
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - m1.small
+      - m1.medium
+    ConstraintDescription: must be a valid EC2 instance type.
+  SSHLocation:
+    Description: ' The IP address range that can be used to SSH to the EC2 instances'
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+Resources:
+  CatalogWeb:
+    Type: AWS::EC2::Instance
+    # Metadata:
+    #   AWS::CloudFormation::Init:
+    #     config:
+    #       packages:
+    #         yum:
+    #           git: []
+    #           nodejs: []
+        #   files: 
+        #     /tmp/setup.sh: 
+        #       content: !Sub | 
+        #         git clone https://github.com/sloekito/traveljournal.git;
+        #       mode: "000644"
+        #       owner: "root"
+        #       group: "root"
+
+        # Configure:
+        #   commands:
+        #     01_clone_repos:
+        #       command: /tmp/setup.sh
+
+    Properties:
+      # ImageId: !FindInMap [AWSRegionArch2AMI, !Ref 'AWS::Region', !FindInMap [AWSInstanceType2Arch,
+      #     !Ref 'InstanceType', Arch]]
+      ImageId: !Ref 'ImageId'
+      InstanceType: !Ref 'InstanceType'
+      SecurityGroups:
+        - !Ref 'WebServerSecurityGroup'
+      KeyName: !Ref 'KeyName'
+      Tags:
+        - Key: Name
+          Value: !Ref 'AWS::StackName'
+      UserData: !Base64
+        Fn::Join:
+          - ''
+          - - '#!/bin/bash -xe
+
+              '
+            # - 'yum update -y aws-cfn-bootstrap
+
+            #   '
+            - 'yum update -y 
+
+              '
+            - 'curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+
+              '
+            - 'yum -y install nodejs
+
+              '
+            - 'yum -y install git
+            
+              '
+
+            # Export environment variables for database connection
+
+            - 'SETENV=/etc/setenv
+
+            '
+
+            - 'echo "export MYSQL_DATABASE_HOST='
+            - !Ref 'DBHostName'
+            - '" > ${SETENV}
+              
+            '
+
+            - 'echo  $MYSQL_DATABASE_HOST > /tmp/test
+
+            '
+
+            - 'echo "export MYSQL_DATABASE_USER='
+            - !Ref 'DBUser'
+            - '" > ${SETENV}
+              
+            '
+            
+            - 'echo  $MYSQL_DATABASE_USER > /tmp/test
+
+            '
+            - 'echo "export MYSQL_DATABASE_PASSWORD='
+            - !Ref 'DBPassword'
+            - '" > ${SETENV}
+              
+            '
+            - 'echo "export MYSQL_DATABASE_DB='
+            - !Ref 'DBName'
+            - '" > ${SETENV}
+              
+            '
+
+            - 'mkdir /app
+
+              '
+            - 'git clone https://github.com/sloekito/WWCode-cloud-deploy.git /app
+              
+              '
+            - 'pip install -r /app/catalog-web/requirements.txt 
+              
+              '
+
+            - 'python /app/catalog-web/app.py
+              
+              '
+
+            # - '# Signal the status from cfn-init'
+            - '/opt/aws/bin/cfn-signal -e $? '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource CatalogWeb '
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - '
+
+              '
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT5M
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access via port 80
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Ref 'SSHLocation'
+Outputs:
+  WebsiteURL:
+    Description: URL for newly created catalog stack
+    Value: !Join ['', ['http://', !GetAtt 'CatalogWeb.PublicDnsName']]
