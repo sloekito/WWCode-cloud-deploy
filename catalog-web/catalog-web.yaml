@@ -106,10 +106,13 @@ Resources:
             - 'yum -y install git
             
               '
+            - 'yum -y install mysql mysql-devel mysql-common mysql-libs gcc
+
+              '
 
             # Export environment variables for database connection
 
-            - 'SETENV=/etc/setenv
+            - 'SETENV=/etc/profile
 
             '
 
