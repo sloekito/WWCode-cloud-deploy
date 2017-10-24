@@ -44,11 +44,6 @@ class Catalog(Resource):
             except:
                 print("Error: unable to fetch data")
 
-                # disconnect from server
-                db.close()
-
-                return results
-
             finally:
                 cursor.close()
     
