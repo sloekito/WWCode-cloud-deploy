@@ -74,6 +74,64 @@ Resources:
         #     01_clone_repos:
         #       command: /tmp/setup.sh
 
+    Metadata:
+      AWS::CloudFormation::Init: 
+        configSets:
+          InstallAndRun:
+            - Install
+            - Configure
+        Install:
+            packages:
+              yum:
+                mysql: []
+                git: []
+                python35: []
+                python35-setuptools: []
+                mysql-devel: [] 
+                # mysql-libs: []
+                # MySQL-python: []
+                # gcc: []
+              python:
+                Flask: []
+                requests: []
+                flask-restful: []
+                wheel: []
+                mysql-connector-python-rf: []
+                gunicorn: []
+        Configure:
+          commands: 
+            test: 
+              command: "echo \"$MYSQL_DATABASE_HOST\" > test.txt"
+              env: 
+                MAGIC: "I come from the environment!"
+                MYSQL_DATABASE_HOST: !Ref 'DBHostName'
+              cwd: "~"
+              ignoreErrors: "false"
+            # run:
+            #   # command: "mkdir /var/www; git clone https://github.com/sloekito/WWCode-cloud-deploy.git /var/www; pip install -r /app/catalog-web/requirements.txt; python app.py"
+            #   command: "mkdir /var/www; "
+            #   env: 
+            #     MYSQL_DATABASE_HOST: !Ref 'DBHostName'
+            #     MYSQL_DATABASE_USER: !Ref 'DBUser'
+            #     MYSQL_DATABASE_PASSWORD: !Ref 'DBUser'
+            #     MYSQL_DATABASE_DB: !Ref 'DBName'
+            #   cwd: "/var/www/catalog-web"
+            #   ignoreErrors: "false"
+            run:
+              # command: "easy_install-3.5 pip; pip3 install -r requirements.txt; python3 app.py;"
+              # command: "python app.py &"
+              # command: "gunicorn app:app -b 0.0.0.0"
+              command: "gunicorn app:app -b 0.0.0.0:80"
+              env: 
+                MYSQL_DATABASE_HOST: !Ref 'DBHostName'
+                MYSQL_DATABASE_USER: !Ref 'DBUser'
+                MYSQL_DATABASE_PASSWORD: !Ref 'DBPassword'
+                MYSQL_DATABASE_DB: !Ref 'DBName'
+              cwd: "/var/www/catalog-web"
+              ignoreErrors: "false"
+          sources: 
+            /var/www: "https://github.com/sloekito/WWCode-cloud-deploy/tarball/master"
+
     Properties:
       # ImageId: !FindInMap [AWSRegionArch2AMI, !Ref 'AWS::Region', !FindInMap [AWSInstanceType2Arch,
       #     !Ref 'InstanceType', Arch]]
@@ -91,76 +149,94 @@ Resources:
           - - '#!/bin/bash -xe
 
               '
-            # - 'yum update -y aws-cfn-bootstrap
+            - 'yum install -y aws-cfn-bootstrap
 
-            #   '
+              '
             - 'yum update -y 
 
               '
             - 'curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
 
               '
-            - 'yum -y install nodejs
+            # - 'yum -y install nodejs
 
-              '
-            - 'yum -y install git
+            #   '
+            # - 'yum -y install git
             
-              '
-            - 'yum -y install mysql mysql-devel mysql-common mysql-libs gcc
+            #   '
+            # - 'yum -y install mysql mysql-devel mysql-common mysql-libs gcc
 
-              '
-
+            #   '
+             #yum install python35
+             #yum install python35-pip
             # Export environment variables for database connection
 
-            - 'SETENV=/etc/profile
+            # - 'SETENV=/etc/profile
 
-            '
+            # '
 
-            - 'echo "export MYSQL_DATABASE_HOST='
-            - !Ref 'DBHostName'
-            - '" > ${SETENV}
+            # - 'echo "export MYSQL_DATABASE_HOST='
+            # - !Ref 'DBHostName'
+            # - '" > ${SETENV}
               
-            '
+            # '
 
-            - 'echo  $MYSQL_DATABASE_HOST > /tmp/test
+            # - 'echo  $MYSQL_DATABASE_HOST > /tmp/test
 
-            '
+            # '
 
-            - 'echo "export MYSQL_DATABASE_USER='
-            - !Ref 'DBUser'
-            - '" > ${SETENV}
+            # - 'echo "export MYSQL_DATABASE_USER='
+            # - !Ref 'DBUser'
+            # - '" > ${SETENV}
               
-            '
+            # '
             
-            - 'echo  $MYSQL_DATABASE_USER > /tmp/test
+            # - 'echo  $MYSQL_DATABASE_USER > /tmp/test
 
-            '
-            - 'echo "export MYSQL_DATABASE_PASSWORD='
-            - !Ref 'DBPassword'
-            - '" > ${SETENV}
+            # '
+            # - 'echo "export MYSQL_DATABASE_PASSWORD='
+            # - !Ref 'DBPassword'
+            # - '" > ${SETENV}
               
-            '
-            - 'echo "export MYSQL_DATABASE_DB='
-            - !Ref 'DBName'
-            - '" > ${SETENV}
+            # '
+            # - 'echo "export MYSQL_DATABASE_DB='
+            # - !Ref 'DBName'
+            # - '" > ${SETENV}
               
-            '
+            # '
 
-            - 'mkdir /app
+            # - 'mkdir /app
+
+            #   '
+            - '/opt/aws/bin/cfn-init -v '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource CatalogWeb '
+            - '         --configsets InstallAndRun '
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - '
 
               '
-            - 'git clone https://github.com/sloekito/WWCode-cloud-deploy.git /app
-              
-              '
-            - 'pip install -r /app/catalog-web/requirements.txt 
-              
-              '
 
-            - 'python /app/catalog-web/app.py
               
-              '
+            # - 'git clone https://github.com/sloekito/WWCode-cloud-deploy.git /app
+              
+            #   '
 
-            # - '# Signal the status from cfn-init'
+            # - 'pip install Flask requests flask-restful wheel mysql-connector-python-rf
+              
+            #   '
+
+            # - 'pip install -r /app/catalog-web/requirements.txt 
+              
+            #   '
+
+            # - 'python /app/catalog-web/app.py
+              
+            #   '
+
+            - '# Signal the status'
             - '/opt/aws/bin/cfn-signal -e $? '
             - '         --stack '
             - !Ref 'AWS::StackName'
