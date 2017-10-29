@@ -1,9 +1,10 @@
 import boto3, botocore
 import argparse
 
-def create_ec2_catalog_web(aws_cf_client, stack_name, db_hostname, db_user, db_password, db_name, cft_file):
+
+def create_ec2_catalog_middleware(aws_cf_client, stack_name, db_hostname, db_user, db_password, db_name, cft_file):
     """
-    Creates the ec2 instance that contains our web application
+    Creates the ec2 instance that hosts our middleware application
     AMI:
     Keyname:
     """
@@ -64,17 +65,12 @@ def _stack_exists(stack_name, aws_cf_client):
 def main():
     
     parser = argparse.ArgumentParser(description='Deployment Arguments')
-    parser.add_argument("--stack_name", help="the cloud formation stack name", required=True)
+    parser.add_argument("--stack_name", help="the Cloud Formation stack name to be created", required=True)
     parser.add_argument("--db_hostname", help="the mysql host name", required=True)
     parser.add_argument("--db_user", help="the mysql user", required=True)
     parser.add_argument("--db_password", help="the mysql password", required=True)
     parser.add_argument("--db_name", help="the mysql db name", required=True)
-
     args = parser.parse_args()
-
-    session = boto3.Session(profile_name='workshop', region_name='us-west-2')
-
-    aws_cf_client = session.client('cloudformation')
 
     stack_name = args.stack_name
     db_hostname = args.db_hostname
@@ -82,16 +78,21 @@ def main():
     db_password = args.db_password
     db_name = args.db_name
 
+    session = boto3.Session(profile_name='workshop', region_name='us-west-2')
+
+    aws_cf_client = session.client('cloudformation')
+
+
     # Get the DB Hostname from DB Cloud Formation Stack
     # get_db_hostname()
 
-    create_ec2_catalog_web(aws_cf_client=aws_cf_client, 
+    create_ec2_catalog_middleware(aws_cf_client=aws_cf_client, 
         stack_name=stack_name, 
         db_hostname=db_hostname,
         db_user=db_user,
         db_password=db_password,
         db_name=db_name,
-        cft_file="catalog-web.yaml")
+        cft_file="catalog-middleware.yaml")
 
 if __name__ == '__main__':
     main()

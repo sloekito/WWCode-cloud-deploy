@@ -52,7 +52,7 @@ Parameters:
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 Resources:
-  CatalogWeb:
+  CatalogMiddleware:
     Type: AWS::EC2::Instance
     # Metadata:
     #   AWS::CloudFormation::Init:
@@ -98,6 +98,7 @@ Resources:
                 wheel: []
                 mysql-connector-python-rf: []
                 gunicorn: []
+                flask_cors: []
         Configure:
           commands: 
             test: 
@@ -108,14 +109,14 @@ Resources:
               cwd: "~"
               ignoreErrors: "false"
             # run:
-            #   # command: "mkdir /var/www; git clone https://github.com/sloekito/WWCode-cloud-deploy.git /var/www; pip install -r /app/catalog-web/requirements.txt; python app.py"
+            #   # command: "mkdir /var/www; git clone https://github.com/sloekito/WWCode-cloud-deploy.git /var/www; pip install -r /app/catalog-middleware/requirements.txt; python app.py"
             #   command: "mkdir /var/www; "
             #   env: 
             #     MYSQL_DATABASE_HOST: !Ref 'DBHostName'
             #     MYSQL_DATABASE_USER: !Ref 'DBUser'
             #     MYSQL_DATABASE_PASSWORD: !Ref 'DBUser'
             #     MYSQL_DATABASE_DB: !Ref 'DBName'
-            #   cwd: "/var/www/catalog-web"
+            #   cwd: "/var/www/catalog-middleware"
             #   ignoreErrors: "false"
             run:
               # command: "easy_install-3.5 pip; pip3 install -r requirements.txt; python3 app.py;"
@@ -127,7 +128,7 @@ Resources:
                 MYSQL_DATABASE_USER: !Ref 'DBUser'
                 MYSQL_DATABASE_PASSWORD: !Ref 'DBPassword'
                 MYSQL_DATABASE_DB: !Ref 'DBName'
-              cwd: "/var/www/catalog-web"
+              cwd: "/var/www/catalog-middleware"
               ignoreErrors: "false"
           sources: 
             /var/www: "https://github.com/sloekito/WWCode-cloud-deploy/tarball/master"
@@ -161,6 +162,12 @@ Resources:
             # - 'yum -y install nodejs
 
             #   '
+            
+
+            # - 'yum -y install python-pip
+            
+            #   '
+
             # - 'yum -y install git
             
             #   '
@@ -211,7 +218,7 @@ Resources:
             - '/opt/aws/bin/cfn-init -v '
             - '         --stack '
             - !Ref 'AWS::StackName'
-            - '         --resource CatalogWeb '
+            - '         --resource CatalogMiddleware '
             - '         --configsets InstallAndRun '
             - '         --region '
             - !Ref 'AWS::Region'
@@ -228,11 +235,11 @@ Resources:
               
             #   '
 
-            # - 'pip install -r /app/catalog-web/requirements.txt 
+            # - 'pip install -r /app/catalog-middleware/requirements.txt 
               
             #   '
 
-            # - 'python /app/catalog-web/app.py
+            # - 'python /app/catalog-middleware/app.py
               
             #   '
 
@@ -240,7 +247,7 @@ Resources:
             - '/opt/aws/bin/cfn-signal -e $? '
             - '         --stack '
             - !Ref 'AWS::StackName'
-            - '         --resource CatalogWeb '
+            - '         --resource CatalogMiddleware '
             - '         --region '
             - !Ref 'AWS::Region'
             - '
@@ -265,4 +272,4 @@ Resources:
 Outputs:
   WebsiteURL:
     Description: URL for newly created catalog stack
-    Value: !Join ['', ['http://', !GetAtt 'CatalogWeb.PublicDnsName']]
+    Value: !Join ['', ['http://', !GetAtt 'CatalogMiddleware.PublicDnsName']]

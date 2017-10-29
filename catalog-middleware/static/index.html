@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
 function getCatalog() {
-    URL = "http://127.0.0.1/catalog";
+    URL = "http://34.210.54.118/catalog";
 
     var xmlHttp = new XMLHttpRequest();
 
@@ -28,7 +28,6 @@ function populateTable(responseText)
     catalog.push(["Title", "Author", "Publisher"]);
     
     for (var i = 0; i < response.length; i++) {
-        console.log(response[i]);
         item = response[i];
 
         catalog.push([item["title"], item["author"], item["publisher"]]);
