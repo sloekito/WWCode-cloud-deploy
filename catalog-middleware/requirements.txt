@@ -2,5 +2,4 @@ Flask==0.11.1
 requests==2.11.1
 flask-restful==0.3.5
 wheel==0.30.0
-mysql-connector-python-rf==2.2.2
 gunicorn==19.7.1
