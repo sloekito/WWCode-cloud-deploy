@@ -4,14 +4,31 @@ from flask import request
 import os
 import mysql.connector
 
+# import settings
+# from app import app
 # Get database settings from environment variables
 MYSQL_DATABASE_HOST = os.getenv("MYSQL_DATABASE_HOST")
 MYSQL_DATABASE_USER = os.getenv("MYSQL_DATABASE_USER")
 MYSQL_DATABASE_PASSWORD = os.getenv("MYSQL_DATABASE_PASSWORD")
 MYSQL_DATABASE_DB = os.getenv("MYSQL_DATABASE_DB")
 
+# settings.MYSQL_DATABASE_HOST
+# MYSQL_DATABASE_HOST = app.config.get("MYSQL_DATABASE_HOST")
+# MYSQL_DATABASE_USER = os.getenv("MYSQL_DATABASE_USER")
+# MYSQL_DATABASE_PASSWORD = os.getenv("MYSQL_DATABASE_PASSWORD")
+# MYSQL_DATABASE_DB = os.getenv("MYSQL_DATABASE_DB")
+
 class Catalog(Resource):
+
     def get(self):
+        # from app import app
+        # print(app.config.get("MYSQL_DATABASE_HOST"))
+        # MYSQL_DATABASE_HOST = app.config.get("MYSQL_DATABASE_HOST")
+        # MYSQL_DATABASE_USER = app.config.get("MYSQL_DATABASE_USER")
+        # MYSQL_DATABASE_PASSWORD = app.config.get("MYSQL_DATABASE_PASSWORD")
+        # MYSQL_DATABASE_DB = app.config.get("MYSQL_DATABASE_DB")
+
+
         # Handle catalog search
         keyword = request.args.get('keyword')
         if keyword:
