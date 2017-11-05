@@ -16,7 +16,12 @@ https://pip.pypa.io/en/stable/installing/
 boto3
 
 ```pip install boto3```
- 
+
+mysql connector
+
+```pip install mysql-connector```
+
+
 AWS CLI
 
 ```pip install awscli --upgrade --user```

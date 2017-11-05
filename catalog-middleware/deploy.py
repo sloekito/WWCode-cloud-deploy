@@ -117,7 +117,7 @@ def main():
     print(db_stack_output)
 
     # Get the database hostname created by cloudformation
-    db_hostname = db_stack_output["RDSEndpoint"]
+    db_hostname = db_stack_output.get("RDSEndpoint")
 
     create_ec2_catalog_middleware(aws_cf_client=aws_cf_client, 
         stack_name=stack_name, 

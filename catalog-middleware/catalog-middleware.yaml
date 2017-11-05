@@ -151,7 +151,7 @@ Resources:
 
             '
 
-            - 'echo "cd /app/catalog-middleware/" >> ${RUNFILE}
+            - 'echo "cd /app/catalog-middleware/app" >> ${RUNFILE}
 
             '
             - 'echo "/usr/local/bin/gunicorn app:app -b 0.0.0.0:80" >> ${RUNFILE}
@@ -163,6 +163,7 @@ Resources:
             - 'sleep 5
             
             '
+            # Test the deployment
             - 'curl http://0.0.0.0:80/catalog
             
             '
