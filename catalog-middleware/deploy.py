@@ -51,7 +51,6 @@ def create_ec2_catalog_middleware(aws_cf_client, stack_name, db_hostname, db_use
         else:
             raise
 
-
 def _stack_exists(stack_name, aws_cf_client):
     stacks = aws_cf_client.list_stacks()['StackSummaries']
     for stack in stacks:
@@ -61,19 +60,48 @@ def _stack_exists(stack_name, aws_cf_client):
             return True
     return False
 
+def get_stack_output(aws_cf_client, stack_name):
+    describe_stack = aws_cf_client.describe_stacks(StackName=stack_name)
+    print(describe_stack)
 
-def main():
+    stacks = describe_stack["Stacks"]
+
+    out_dict = {}
+    for stack in stacks:
+        for outputs in stack["Outputs"]:
+            out_dict[outputs["OutputKey"]] = outputs["OutputValue"]
     
+    return out_dict
+
+def main():    
     parser = argparse.ArgumentParser(description='Deployment Arguments')
-    parser.add_argument("--stack_name", help="the Cloud Formation stack name to be created", required=True)
-    parser.add_argument("--db_hostname", help="the mysql host name", required=True)
+    parser.add_argument("--stack_name", help="The Cloud Formation stack name to be created", required=True)
+    # parser.add_argument("--db_hostname", help="the mysql host name", required=True)
+    parser.add_argument("--db_stack_name", help="The Database stack name. Used for the db hostname.", required=True)
     parser.add_argument("--db_user", help="the mysql user", required=True)
     parser.add_argument("--db_password", help="the mysql password", required=True)
     parser.add_argument("--db_name", help="the mysql db name", required=True)
     args = parser.parse_args()
 
     stack_name = args.stack_name
-    db_hostname = args.db_hostname
+    # db_hostname = args.db_hostname
+    db_stack_name = args.db_stack_name
+    db_user = args.db_user
+    db_password = args.db_password
+    db_name = args.db_name
+ 
+    parser = argparse.ArgumentParser(description='Deployment Arguments')
+    parser.add_argument("--stack_name", help="The Cloud Formation stack name to be created", required=True)
+    # parser.add_argument("--db_hostname", help="the mysql host name", required=True)
+    parser.add_argument("--db_stack_name", help="The Database stack name. Used for the db hostname.", required=True)
+    parser.add_argument("--db_user", help="the mysql user", required=True)
+    parser.add_argument("--db_password", help="the mysql password", required=True)
+    parser.add_argument("--db_name", help="the mysql db name", required=True)
+    args = parser.parse_args()
+
+    stack_name = args.stack_name
+    # db_hostname = args.db_hostname
+    db_stack_name = args.db_stack_name
     db_user = args.db_user
     db_password = args.db_password
     db_name = args.db_name
@@ -84,7 +112,12 @@ def main():
 
 
     # Get the DB Hostname from DB Cloud Formation Stack
-    # get_db_hostname()
+    db_stack_output = get_stack_output(aws_cf_client=aws_cf_client, stack_name=db_stack_name)
+    
+    print(db_stack_output)
+
+    # Get the database hostname created by cloudformation
+    db_hostname = db_stack_output["RDSEndpoint"]
 
     create_ec2_catalog_middleware(aws_cf_client=aws_cf_client, 
         stack_name=stack_name, 
