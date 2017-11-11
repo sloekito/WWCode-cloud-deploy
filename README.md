@@ -24,7 +24,7 @@ Follow these instructions:
 https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
 
 
-To confirm installation works, in your terminal window, type:
+To confirm installation works, on your terminal window, type:
 
 ```
 python
@@ -47,7 +47,7 @@ Follow these instructions:
 https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
 
 
-To confirm installation works, in your terminal window, type:
+To confirm installation works, on your terminal window, type:
 
 ```
 pip
