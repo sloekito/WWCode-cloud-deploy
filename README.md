@@ -4,32 +4,32 @@
 
 #### AWS Free Tier Account (requires credit card to sign up)
 
-https://aws.amazon.com/free/
+    https://aws.amazon.com/free/
 
-For this workshop, we will stay within the free tier so you won't get charged
+    For this workshop, we will stay within the free tier so you won't get charged
 
 
 #### Python 3
-MacOS: 
+    ##### MacOS: 
 
-If you don't already have python installed:
+    If you don't already have python installed:
 
-https://www.python.org/downloads/mac-osx/
+    https://www.python.org/downloads/mac-osx/
 
-Windows: 
+    ##### Windows: 
 
-https://www.python.org/downloads/windows/
+    https://www.python.org/downloads/windows/
 
-Follow these instructions:
+    Follow these instructions:
 
-https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
+    https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
 
 
-To confirm installation works, in your terminal window, type:
+    To confirm installation works, in your terminal window, type:
 
-```
-python
-```
+    ```
+    python
+    ```
 
 #### PIP (Python Package Index)
 MacOS: 
@@ -88,10 +88,11 @@ On your terminal window, type:
 
 1. To see the new access key, choose Show. Your credentials will look something like this:
 
-
+    ```
     Access key ID: AKIAIOSFODNN7EXAMPLE
     Secret access key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     To download the key pair, choose Download .csv file. Store the keys in a secure location.
+    ```
 
 1. On your terminal window, type:
 ```
