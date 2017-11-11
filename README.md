@@ -26,7 +26,7 @@ https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
 
 To confirm installation works, on your terminal window, type:
 
-```
+```bash
 python
 ```
 
@@ -35,7 +35,7 @@ python
 
 On your terminal window, type:
 
-```
+```bash
 curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
 sudo easy_install pip
 ```
@@ -49,36 +49,36 @@ https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
 
 To confirm installation works, on your terminal window, type:
 
-```
+```bash
+
 pip
 ```
 
 
 ### mysql connector
-##### MacOS and Windows:
 
 On your terminal window, type:
 
-```pip install mysql-connector```
+```bash
+pip install mysql-connector```
 
 
 ### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
 
-##### MacOS and Windows:
-
 On your terminal window, type:
 
-```pip install boto3```
+```bash
+pip install boto3```
 
 More info: http://boto3.readthedocs.io/en/latest/
 
 ### AWS CLI (Open source tool built on top of the AWS SDK for Python (Boto) that provides commands for interacting with AWS services.)
 
-##### MacOS and Windows:
-
 On your terminal window, type:
 
-```pip install awscli --upgrade --user```
+
+```bash
+pip install awscli --upgrade --user```
 
 More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
@@ -102,7 +102,7 @@ More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
     ```
 
 1. On your terminal window, type:
-```
+```bash
 aws configure --profile workshop
 ```
 When prompted for keys, copy paste the credentials you saved above. As an example:
@@ -116,7 +116,7 @@ Default output format [None]: text
 
 If setup correctly, type:
 
-```
+```bash
 more ~/.aws/credentials
 
 ```
@@ -140,10 +140,11 @@ https://git-scm.com/downloads
 
 
 ### Clone this repo
-##### MacOS and Windows:
 
 On your terminal window, type:
-```git clone https://github.com/sloekito/WWCode-cloud-deploy.git```
+```bash
+git clone https://github.com/sloekito/WWCode-cloud-deploy.git
+```
 
 
 ## Optional Installation
@@ -171,4 +172,5 @@ https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.
 
 ### Python Flask
 
-```pip install Flask```
+```bash
+pip install Flask```
