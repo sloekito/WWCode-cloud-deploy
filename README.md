@@ -60,7 +60,8 @@ pip
 On your terminal window, type:
 
 ```bash
-pip install mysql-connector```
+pip install mysql-connector
+```
 
 
 ### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
@@ -68,7 +69,8 @@ pip install mysql-connector```
 On your terminal window, type:
 
 ```bash
-pip install boto3```
+pip install boto3
+```
 
 More info: http://boto3.readthedocs.io/en/latest/
 
@@ -78,7 +80,8 @@ On your terminal window, type:
 
 
 ```bash
-pip install awscli --upgrade --user```
+pip install awscli --upgrade --user
+```
 
 More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
@@ -173,4 +176,5 @@ https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.
 ### Python Flask
 
 ```bash
-pip install Flask```
+pip install Flask
+```
