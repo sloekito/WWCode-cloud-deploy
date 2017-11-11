@@ -164,3 +164,7 @@ https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.
 ### mysql connector
 
 ```pip install mysql-connector```
+
+### Python Flask
+
+```pip install Flask```
