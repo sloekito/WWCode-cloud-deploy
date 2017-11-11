@@ -1,19 +1,18 @@
 # WWCode Workshop: Deploying Your First Full Stack Application to the Cloud
 
-### Install Prerequisites
+## Install Prerequisites
 
-#### AWS Free Tier Account (requires credit card to sign up)
+### AWS Free Tier Account (requires credit card to sign up)
 
 https://aws.amazon.com/free/
 
 For this workshop, we will stay within the free tier so you won't get charged
 
 
-#### Python 3
+### Python 3
 ##### MacOS: 
 
 If you don't already have python installed:
-
 https://www.python.org/downloads/mac-osx/
 
 ##### Windows: 
@@ -31,7 +30,7 @@ To confirm installation works, in your terminal window, type:
 python
 ```
 
-#### PIP (Python Package Index)
+### PIP (Python Package Index)
 ##### MacOS: 
 
 On your terminal window, type:
@@ -54,7 +53,7 @@ To confirm installation works, in your terminal window, type:
 pip
 ```
 
-#### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
+### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
 
 
 ##### MacOS and Windows:
@@ -65,7 +64,7 @@ On your terminal window, type:
 
 More info: http://boto3.readthedocs.io/en/latest/
 
-#### AWS CLI (Open source tool built on top of the AWS SDK for Python (Boto) that provides commands for interacting with AWS services.)
+### AWS CLI (Open source tool built on top of the AWS SDK for Python (Boto) that provides commands for interacting with AWS services.)
 
 ##### MacOS and Windows:
 
@@ -75,7 +74,7 @@ On your terminal window, type:
 
 More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
-#### Setup your AWS Credentials
+### Setup your AWS Credentials
 
 
 1. Open AWS Console, go to "Identity and Access Management" to pen the IAM console.
@@ -126,22 +125,22 @@ More info here:
 http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
 
 
-#### Git client (for cloning this repo)
+### Git client (for cloning this repo)
 ##### MacOS and Windows: 
 
 https://git-scm.com/downloads
 
 
-#### Clone this repo
+### Clone this repo
 ##### MacOS and Windows:
 
 On your terminal window, type:
 ```git clone https://github.com/sloekito/WWCode-cloud-deploy.git```
 
 
-### Optional Installation
+## Optional Installation
 
-#### SSH Client
+### SSH Client
 
 ##### Windows:
 
@@ -154,7 +153,7 @@ Should already have ssh
 Alternatively, you can try the ssh client on Chrome Browser: https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo?hl=en
 
 
-#### MySQL Client
+### MySQL Client
 
 ##### Windows:
 https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.9-winx64.msi
@@ -162,6 +161,6 @@ https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.
 ##### MacOS:
 https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.9-osx-x86_64.dmg
 
-#### mysql connector
+### mysql connector
 
 ```pip install mysql-connector```
