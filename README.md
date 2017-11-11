@@ -53,8 +53,16 @@ To confirm installation works, on your terminal window, type:
 pip
 ```
 
-### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
 
+### mysql connector
+##### MacOS and Windows:
+
+On your terminal window, type:
+
+```pip install mysql-connector```
+
+
+### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
 
 ##### MacOS and Windows:
 
@@ -160,10 +168,6 @@ https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.
 
 ##### MacOS:
 https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.9-osx-x86_64.dmg
-
-### mysql connector
-
-```pip install mysql-connector```
 
 ### Python Flask
 
