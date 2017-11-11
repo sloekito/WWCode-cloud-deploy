@@ -4,35 +4,35 @@
 
 #### AWS Free Tier Account (requires credit card to sign up)
 
-    https://aws.amazon.com/free/
+https://aws.amazon.com/free/
 
-    For this workshop, we will stay within the free tier so you won't get charged
+For this workshop, we will stay within the free tier so you won't get charged
 
 
 #### Python 3
-    ##### MacOS: 
+##### MacOS: 
 
-    If you don't already have python installed:
+If you don't already have python installed:
 
-    https://www.python.org/downloads/mac-osx/
+https://www.python.org/downloads/mac-osx/
 
-    ##### Windows: 
+##### Windows: 
 
-    https://www.python.org/downloads/windows/
+https://www.python.org/downloads/windows/
 
-    Follow these instructions:
+Follow these instructions:
 
-    https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
+https://github.com/BurntSushi/nfldb/wiki/Python-&-pip-Windows-installation
 
 
-    To confirm installation works, in your terminal window, type:
+To confirm installation works, in your terminal window, type:
 
-    ```
-    python
-    ```
+```
+python
+```
 
 #### PIP (Python Package Index)
-MacOS: 
+##### MacOS: 
 
 On your terminal window, type:
 
@@ -41,7 +41,7 @@ curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
 sudo easy_install pip
 ```
 
-Windows: 
+##### Windows: 
 
 Follow these instructions:
 
@@ -56,24 +56,24 @@ pip
 
 #### boto3 (AWS SDK for Python, which allows Python developers to write software that makes use of Amazon services like S3 and EC2)
 
-http://boto3.readthedocs.io/en/latest/
 
-
-MacOS and Windows:
+##### MacOS and Windows:
 
 On your terminal window, type:
 
 ```pip install boto3```
 
+More info: http://boto3.readthedocs.io/en/latest/
+
 #### AWS CLI (Open source tool built on top of the AWS SDK for Python (Boto) that provides commands for interacting with AWS services.)
 
-http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
-
-MacOS and Windows:
+##### MacOS and Windows:
 
 On your terminal window, type:
 
 ```pip install awscli --upgrade --user```
+
+More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
 #### Setup your AWS Credentials
 
@@ -127,13 +127,13 @@ http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
 
 
 #### Git client (for cloning this repo)
-MacOS and Windows: 
+##### MacOS and Windows: 
 
 https://git-scm.com/downloads
 
 
 #### Clone this repo
-MacOS and Windows:
+##### MacOS and Windows:
 
 On your terminal window, type:
 ```git clone https://github.com/sloekito/WWCode-cloud-deploy.git```
@@ -143,11 +143,11 @@ On your terminal window, type:
 
 #### SSH Client
 
-Windows:
+##### Windows:
 
 Download from http://www.putty.org/
 
-MacOS:
+##### MacOS:
 
 Should already have ssh
 
@@ -156,10 +156,10 @@ Alternatively, you can try the ssh client on Chrome Browser: https://chrome.goog
 
 #### MySQL Client
 
-Windows:
+##### Windows:
 https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.9-winx64.msi
 
-MacOS:
+##### MacOS:
 https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.9-osx-x86_64.dmg
 
 #### mysql connector
