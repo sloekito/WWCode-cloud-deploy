@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Metadata: 
   License: Apache-2.0
-Description: 'AWS CloudFormation Template for MySQL RDS.'
+Description: 'Catalog Database instance on MySQL RDS.'
 Parameters:
   DBName:
     Default: MyDatabase
@@ -63,7 +63,3 @@ Outputs:
   RDSEndpoint:
     Description: RDS Endpoint
     Value: !GetAtt [MasterDB, Endpoint.Address]
-  MasterJDBCConnectionString:
-    Description: JDBC connection string for the master database
-    Value: !Join ['', ['jdbc:mysql://', !GetAtt [MasterDB, Endpoint.Address], ':',
-        !GetAtt [MasterDB, Endpoint.Port], /, !Ref 'DBName']]

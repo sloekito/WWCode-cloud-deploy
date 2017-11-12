@@ -148,13 +148,12 @@ def main():
     aws_cf_client = session.client('cloudformation')
 
 
-    # Create the database
+    # Step 1: Create the database
     create_db(aws_cf_client=aws_cf_client, 
             cf_stack_name=stack_name, 
             cft_file="catalog-db.yaml",
             db_admin_user=db_admin_user,
             db_admin_password=db_admin_password)
-
 
     db_stack_output = get_stack_output(aws_cf_client=aws_cf_client, stack_name=stack_name)
     
