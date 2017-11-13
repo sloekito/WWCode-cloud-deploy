@@ -60,7 +60,7 @@ pip
 On your terminal window, type:
 
 ```bash
-pip install mysql-connector
+pip install mysql-connector-python-rf
 ```
 
 
