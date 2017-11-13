@@ -9,7 +9,7 @@ def create_s3_bucket(aws_cf_client, cf_stack_name, s3_bucket_name, cft_file):
     Creates an s3 bucket if it does not already exist
     Updates the bucket if it already exists
     Parameter description:
-        aws_cf_client: the client connection to AWS API
+        aws_cf_client: the boto3 client connection to AWS 
         cf_stack_name: the Cloud Formation stack name
         s3_bucket_name: the s3 bucket name we are creating. Must be globally unique
         cft_file: cloud formation template used to create the s3 bucket
@@ -22,7 +22,6 @@ def create_s3_bucket(aws_cf_client, cf_stack_name, s3_bucket_name, cft_file):
     try:
         if _stack_exists(cf_stack_name, aws_cf_client):
             print('Updating {}'.format(cf_stack_name))
-            # stack_result = aws_cf_client.update_stack(cf_params)
             with open(cft_file, 'r') as template:
                 response = aws_cf_client.update_stack(
                     StackName=cf_stack_name,
@@ -34,7 +33,6 @@ def create_s3_bucket(aws_cf_client, cf_stack_name, s3_bucket_name, cft_file):
             waiter = aws_cf_client.get_waiter('stack_update_complete')
         else:
             print('Creating {}'.format(cf_stack_name))
-            # stack_result = aws_cf_client.create_stack(cf_params)
             with open(cft_file, 'r') as template:
                 response = aws_cf_client.create_stack(
                     StackName=cf_stack_name,
@@ -60,7 +58,6 @@ def upload_files_to_s3(s3_client, s3_bucket_name, static_file_dir):
         file_name: the file name to upload to the s3 bucket. Example: "index.html"
     """
     for file_name in os.listdir(static_file_dir):
-
         static_file_name = os.path.join(static_file_dir, file_name)
         print("Uploading " + static_file_name + " to " + s3_bucket_name)
 
@@ -88,10 +85,14 @@ def _stack_exists(stack_name, aws_cf_client):
     return False
 
 def substitute_templates(template_file_dir, static_file_dir, mapping):
-    # Perform template string substitution 
-    # mapping contains a key-value pair of strings to be substituted
-    # For example,
-    # ./template/index.html will be substituted and the result will be written to  ./static/index.thml
+    """
+    Perform template string substitution 
+    mapping contains a key-value pair of strings to be substituted
+    For example,
+    ./template/index.html will be substituted and the result will be written to  ./static/index.thml
+    """
+    if not os.path.exists(static_file_dir):
+        os.makedirs(static_file_dir)
 
     for file_name in os.listdir(template_file_dir):
         template_file_name = os.path.join(template_file_dir, file_name)
@@ -104,15 +105,6 @@ def substitute_templates(template_file_dir, static_file_dir, mapping):
             with open(static_file_name, "w") as fileout:
                 fileout.write(result)
       
-
-    # d={ "api_host_ip": "34.210.54.118" }
-
-    # with open("./template/index.html.template", 'r') as filein:
-    #     template = Template(filein.read())
-    #     result = template.substitute(d)
-    #     with open("./static/index.html", "w") as fileout:
-    #         fileout.write(result)
-
 def get_stack_output(aws_cf_client, stack_name):
     describe_stack = aws_cf_client.describe_stacks(StackName=stack_name)
     print(describe_stack)
@@ -142,8 +134,6 @@ def main():
     aws_cf_client = session.client('cloudformation')
     s3_client = session.client('s3')
 
-    # mapping = { "api_host_ip": "34.210.54.118" }
-
     middleware_stack_output = get_stack_output(aws_cf_client=aws_cf_client, stack_name=middleware_stack_name)
 
     print(middleware_stack_output)
@@ -153,18 +143,19 @@ def main():
     mapping = { "catalog_api_url": catalog_api_url }
 
 
-    # Create s3 bucket with the supplied arguments
+    # Create S3 bucket with the supplied arguments
     create_s3_bucket(aws_cf_client=aws_cf_client, 
                         cf_stack_name=stack_name, 
                         s3_bucket_name=s3_bucket_name, 
                         cft_file="catalog-frontend.yaml")
 
 
-    # Replace the connection string in file
+    # Replace the middleware URL string in file
     substitute_templates(template_file_dir="./template",
                         static_file_dir="./static",
                         mapping=mapping)
 
+    # Upload index.html to S3
     upload_files_to_s3(s3_client=s3_client, 
                         s3_bucket_name=s3_bucket_name, 
                         static_file_dir="./static")

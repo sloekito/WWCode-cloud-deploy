@@ -10,6 +10,8 @@ def create_db(aws_cf_client, cf_stack_name, cft_file, db_admin_user, db_admin_pa
         aws_cf_client: the client connection to AWS API
         cf_stack_name: the Cloud Formation stack name
         cft_file: cloud formation template used to create the MySQL table
+        db_admin_user: the database admin username
+        db_admin_password: the database admin password 
     """
 
     cf_parameters = [
@@ -21,7 +23,6 @@ def create_db(aws_cf_client, cf_stack_name, cft_file, db_admin_user, db_admin_pa
     try:
         if _stack_exists(cf_stack_name, aws_cf_client):
             print('Updating {}'.format(cf_stack_name))
-            # stack_result = aws_cf_client.update_stack(cf_params)
             with open(cft_file, 'r') as template:
                 response = aws_cf_client.update_stack(
                     StackName=cf_stack_name,
@@ -33,7 +34,6 @@ def create_db(aws_cf_client, cf_stack_name, cft_file, db_admin_user, db_admin_pa
             waiter = aws_cf_client.get_waiter('stack_update_complete')
         else:
             print('Creating {}'.format(cf_stack_name))
-            # stack_result = aws_cf_client.create_stack(cf_params)
             with open(cft_file, 'r') as template:
                 response = aws_cf_client.create_stack(
                     StackName=cf_stack_name,
@@ -83,32 +83,31 @@ def seed_db(sql_file, db_hostname, db_admin_user, db_admin_password):
     finally:
         cnx.close()
 
-def create_read_only_user(db_hostname, db_admin_user, db_admin_password, db_read_only_user, db_read_only_password):
-    print("Create read-only user")
-    print(db_hostname)
-    cnx = mysql.connector.connect(user=db_admin_user, 
-                        password=db_admin_password,
-                        host=db_hostname)
+# def create_read_only_user(db_hostname, db_admin_user, db_admin_password, db_read_only_user, db_read_only_password):
+#     print("Create read-only user")
+#     print(db_hostname)
+#     cnx = mysql.connector.connect(user=db_admin_user, 
+#                         password=db_admin_password,
+#                         host=db_hostname)
 
-    try:
-        cursor = cnx.cursor()
-        command = "GRANT SELECT on catalog.* to '{db_read_only_user}'@'%' identified by '{db_read_only_password}';".format(db_read_only_user=db_read_only_user, db_read_only_password=db_read_only_password)
+#     try:
+#         cursor = cnx.cursor()
+#         command = "GRANT SELECT on catalog.* to '{db_read_only_user}'@'%' identified by '{db_read_only_password}';".format(db_read_only_user=db_read_only_user, db_read_only_password=db_read_only_password)
 
-        print(command)
-        cursor.execute(command)
-        cnx.commit()
-        print("done")
-    except Exception as e:
-        print(e)
-    finally:
-        cnx.close()
+#         print(command)
+#         cursor.execute(command)
+#         cnx.commit()
+#         print("done")
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         cnx.close()
 
 def get_stack_output(aws_cf_client, stack_name):
     describe_stack = aws_cf_client.describe_stacks(StackName=stack_name)
-    print(describe_stack)
+    print('Stack Output {}'.format(describe_stack))
 
     stacks = describe_stack["Stacks"]
-
     out_dict = {}
     for stack in stacks:
         for outputs in stack["Outputs"]:
@@ -122,48 +121,47 @@ def main():
     parser.add_argument("--stack_name", help="The Cloud Formation stack name to be created", required=True)
     parser.add_argument("--db_admin_user", help="the mysql user", required=True)
     parser.add_argument("--db_admin_password", help="the mysql password", required=True)
-    parser.add_argument("--db_read_only_user", help="the mysql readonly user", required=True)
-    parser.add_argument("--db_read_only_password", help="the mysql readonly password", required=True)
     parser.add_argument("--db_name", help="the mysql db name", required=True)
+ 
+    # parser.add_argument("--db_read_only_user", help="the mysql readonly user", required=True)
+    # parser.add_argument("--db_read_only_password", help="the mysql readonly password", required=True)
     args = parser.parse_args()
 
     stack_name = args.stack_name
     db_admin_user = args.db_admin_user
     db_admin_password = args.db_admin_password
-    db_name = args.db_name
-    db_read_only_user = args.db_read_only_user
-    db_read_only_password = args.db_read_only_password
+    # db_name = args.db_name
+    # db_read_only_user = args.db_read_only_user
+    # db_read_only_password = args.db_read_only_password
 
     session = boto3.Session(profile_name='workshop', region_name='us-west-2')
     aws_cf_client = session.client('cloudformation')
 
 
-    # Step 1: Create the database
+    # Create the database server
     create_db(aws_cf_client=aws_cf_client, 
             cf_stack_name=stack_name, 
             cft_file="catalog-db.yaml",
             db_admin_user=db_admin_user,
             db_admin_password=db_admin_password)
 
-    db_stack_output = get_stack_output(aws_cf_client=aws_cf_client, stack_name=stack_name)
-    
-    print(db_stack_output)
-
     # Get the database hostname created by cloudformation
+    db_stack_output = get_stack_output(aws_cf_client=aws_cf_client, stack_name=stack_name)
     db_hostname = db_stack_output["RDSEndpoint"]
-    print(db_hostname)
-    # db_hostname = "test.cssprimgj6xm.us-west-2.rds.amazonaws.com"
+    print("The database hostname is: " + db_hostname)
+
+    # Seed the database with catalog data
     seed_db(sql_file="catalog-db.sql", 
             db_hostname=db_hostname, 
             db_admin_user=db_admin_user, 
             db_admin_password=db_admin_password)
 
-    create_read_only_user(
-        db_hostname=db_hostname, 
-        db_admin_user=db_admin_user,
-        db_admin_password=db_admin_password,
-        db_read_only_user=db_read_only_user, 
-        db_read_only_password=db_read_only_password)
+    # create_read_only_user(
+    #     db_hostname=db_hostname, 
+    #     db_admin_user=db_admin_user,
+    #     db_admin_password=db_admin_password,
+    #     db_read_only_user=db_read_only_user, 
+    #     db_read_only_password=db_read_only_password)
 
 if __name__ == '__main__':
     main()

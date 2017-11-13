@@ -5,8 +5,13 @@ import argparse
 def create_ec2_catalog_middleware(aws_cf_client, stack_name, db_hostname, db_user, db_password, db_name, cft_file):
     """
     Creates the ec2 instance that hosts our middleware application
-    AMI:
-    Keyname:
+    Parameter description:
+        aws_cf_client: the boto3 client connection to AWS 
+        cf_stack_name: the Cloud Formation stack name
+        db_hostname: the database hostname we've previously created
+        db_user: the database hostname we've previously created
+        db_password: the database password we've previously created
+        cft_file: cloud formation template used to create the ec2 instance
     """
 
     cf_parameters = [
@@ -17,7 +22,6 @@ def create_ec2_catalog_middleware(aws_cf_client, stack_name, db_hostname, db_use
         {"ParameterKey": "ImageId", "ParameterValue": "ami-e689729e" },
         {"ParameterKey": "KeyName", "ParameterValue": "wwcode"}
     ]
-    print(cf_parameters)
 
     try:
         if _stack_exists(stack_name, aws_cf_client):
@@ -62,7 +66,7 @@ def _stack_exists(stack_name, aws_cf_client):
 
 def get_stack_output(aws_cf_client, stack_name):
     describe_stack = aws_cf_client.describe_stacks(StackName=stack_name)
-    print(describe_stack)
+    print('Stack Output {}'.format(describe_stack))
 
     stacks = describe_stack["Stacks"]
 
@@ -76,31 +80,13 @@ def get_stack_output(aws_cf_client, stack_name):
 def main():    
     parser = argparse.ArgumentParser(description='Deployment Arguments')
     parser.add_argument("--stack_name", help="The Cloud Formation stack name to be created", required=True)
-    # parser.add_argument("--db_hostname", help="the mysql host name", required=True)
     parser.add_argument("--db_stack_name", help="The Database stack name. Used for the db hostname.", required=True)
-    parser.add_argument("--db_user", help="the mysql user", required=True)
-    parser.add_argument("--db_password", help="the mysql password", required=True)
-    parser.add_argument("--db_name", help="the mysql db name", required=True)
+    parser.add_argument("--db_user", help="the MySQL user", required=True)
+    parser.add_argument("--db_password", help="the MySQL password", required=True)
+    parser.add_argument("--db_name", help="the MySQL db name", required=True)
     args = parser.parse_args()
 
     stack_name = args.stack_name
-    # db_hostname = args.db_hostname
-    db_stack_name = args.db_stack_name
-    db_user = args.db_user
-    db_password = args.db_password
-    db_name = args.db_name
- 
-    parser = argparse.ArgumentParser(description='Deployment Arguments')
-    parser.add_argument("--stack_name", help="The Cloud Formation stack name to be created", required=True)
-    # parser.add_argument("--db_hostname", help="the mysql host name", required=True)
-    parser.add_argument("--db_stack_name", help="The Database stack name. Used for the db hostname.", required=True)
-    parser.add_argument("--db_user", help="the mysql user", required=True)
-    parser.add_argument("--db_password", help="the mysql password", required=True)
-    parser.add_argument("--db_name", help="the mysql db name", required=True)
-    args = parser.parse_args()
-
-    stack_name = args.stack_name
-    # db_hostname = args.db_hostname
     db_stack_name = args.db_stack_name
     db_user = args.db_user
     db_password = args.db_password
@@ -110,15 +96,12 @@ def main():
 
     aws_cf_client = session.client('cloudformation')
 
-
-    # Get the DB Hostname from DB Cloud Formation Stack
+    # Get the DB Hostname from the output of DB Cloud Formation Stack we previously created
     db_stack_output = get_stack_output(aws_cf_client=aws_cf_client, stack_name=db_stack_name)
-    
-    print(db_stack_output)
-
-    # Get the database hostname created by cloudformation
     db_hostname = db_stack_output.get("RDSEndpoint")
+    print("The database hostname is: " + db_hostname)
 
+    # Create the EC2 instance using 
     create_ec2_catalog_middleware(aws_cf_client=aws_cf_client, 
         stack_name=stack_name, 
         db_hostname=db_hostname,
