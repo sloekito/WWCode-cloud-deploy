@@ -44,7 +44,7 @@ Parameters:
     AllowedValues: ['true', 'false']
     ConstraintDescription: must be true or false.
 Resources:
-  MasterDB:
+  CatalogDB:
     Type: AWS::RDS::DBInstance
     Properties:
       DBName: !Ref 'DBName'
@@ -62,4 +62,4 @@ Resources:
 Outputs:
   RDSEndpoint:
     Description: RDS Endpoint
-    Value: !GetAtt [MasterDB, Endpoint.Address]
+    Value: !GetAtt [CatalogDB, Endpoint.Address]

@@ -50,12 +50,6 @@ def create_db(aws_cf_client, cf_stack_name, cft_file, db_admin_user, db_admin_pa
             print("No changes")
         else:
             raise
-    # else:
-    #     print(json.dumps(
-    #         aws_cf_client.describe_stacks(StackName=stack_result['StackId']),
-    #         indent=2,
-    #         default=json_serial
-    #     ))
 
 def _stack_exists(stack_name, aws_cf_client):
     stacks = aws_cf_client.list_stacks()['StackSummaries']
@@ -77,9 +71,6 @@ def seed_db(sql_file, db_hostname, db_admin_user, db_admin_password):
 
         with open(sql_file, 'r') as sql_file:
             sqlCommands = sql_file.read().split(';')
-            # sqlCommands = sql_file.read()
-            # print(sqlCommands)
-            # cursor.execute(sqlCommands, multi=True)
 
             for command in sqlCommands:
                 print(command)
@@ -133,7 +124,6 @@ def main():
     parser.add_argument("--db_admin_password", help="the mysql password", required=True)
     parser.add_argument("--db_read_only_user", help="the mysql readonly user", required=True)
     parser.add_argument("--db_read_only_password", help="the mysql readonly password", required=True)
-
     parser.add_argument("--db_name", help="the mysql db name", required=True)
     args = parser.parse_args()
 

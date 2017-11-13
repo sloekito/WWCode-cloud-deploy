@@ -24,5 +24,3 @@ VALUES
     ( "The Zookeeper's Wife", "Diane Ackerman", "Norton"),
     ( "Shattered", "Jonathan Allen and Amie Parnes", "Crown"),
     ( "Rediscovering Americanism", "Mark Levin", "Simon & Schuster");
-
-
