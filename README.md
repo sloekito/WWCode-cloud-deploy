@@ -80,7 +80,7 @@ On your terminal window, type:
 
 
 ```bash
-pip install awscli --upgrade --user
+pip install awscli 
 ```
 
 More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
