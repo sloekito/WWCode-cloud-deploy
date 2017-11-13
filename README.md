@@ -94,6 +94,10 @@ More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 
 1. Choose your IAM user name (not the check box).
 
+1. Access type, select "Programmatic Access". Click Next.
+    
+1. Set permissions, click "Create Group", Check "AdministratorAccess" and assign a group name to it (something like "admin")
+
 1. Choose the Security credentials tab and then choose Create access key.
 
 1. To see the new access key, choose Show. Your credentials will look something like this:
