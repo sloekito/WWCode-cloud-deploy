@@ -83,26 +83,6 @@ def seed_db(sql_file, db_hostname, db_admin_user, db_admin_password):
     finally:
         cnx.close()
 
-# def create_read_only_user(db_hostname, db_admin_user, db_admin_password, db_read_only_user, db_read_only_password):
-#     print("Create read-only user")
-#     print(db_hostname)
-#     cnx = mysql.connector.connect(user=db_admin_user, 
-#                         password=db_admin_password,
-#                         host=db_hostname)
-
-#     try:
-#         cursor = cnx.cursor()
-#         command = "GRANT SELECT on catalog.* to '{db_read_only_user}'@'%' identified by '{db_read_only_password}';".format(db_read_only_user=db_read_only_user, db_read_only_password=db_read_only_password)
-
-#         print(command)
-#         cursor.execute(command)
-#         cnx.commit()
-#         print("done")
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         cnx.close()
-
 def get_stack_output(aws_cf_client, stack_name):
     describe_stack = aws_cf_client.describe_stacks(StackName=stack_name)
     print('Stack Output {}'.format(describe_stack))
@@ -122,17 +102,12 @@ def main():
     parser.add_argument("--db_admin_user", help="the mysql user", required=True)
     parser.add_argument("--db_admin_password", help="the mysql password", required=True)
     parser.add_argument("--db_name", help="the mysql db name", required=True)
- 
-    # parser.add_argument("--db_read_only_user", help="the mysql readonly user", required=True)
-    # parser.add_argument("--db_read_only_password", help="the mysql readonly password", required=True)
+
     args = parser.parse_args()
 
     stack_name = args.stack_name
     db_admin_user = args.db_admin_user
     db_admin_password = args.db_admin_password
-    # db_name = args.db_name
-    # db_read_only_user = args.db_read_only_user
-    # db_read_only_password = args.db_read_only_password
 
     session = boto3.Session(profile_name='workshop', region_name='us-west-2')
     aws_cf_client = session.client('cloudformation')
@@ -155,13 +130,6 @@ def main():
             db_hostname=db_hostname, 
             db_admin_user=db_admin_user, 
             db_admin_password=db_admin_password)
-
-    # create_read_only_user(
-    #     db_hostname=db_hostname, 
-    #     db_admin_user=db_admin_user,
-    #     db_admin_password=db_admin_password,
-    #     db_read_only_user=db_read_only_user, 
-    #     db_read_only_password=db_read_only_password)
 
 if __name__ == '__main__':
     main()

@@ -1,13 +1,43 @@
 <hr />
 <body onload="getCatalog();">  
+    <h1>Book Catalog</h1>
     <div id="dvTable">
     </div>
 </body>
 
+<style>
+h1 {
+    color: 4CAF50;
+    font-family: verdana;
+    font-size: 300%;
+    font-family: verdana;
+
+}
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-family: verdana;
+
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+    font-family: verdana;
+}
+</style>
 
 <script type="text/javascript">
 function getCatalog() {
     URL = "$catalog_api_url";
+    
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.onreadystatechange = function() {
