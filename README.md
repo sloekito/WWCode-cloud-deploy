@@ -57,6 +57,18 @@ pip
 
 ### mysql connector
 
+MacOS
+```bash
+pip install mysql-connector
+```
+
+Some of you may have to do this:
+```bash
+sudo pip install mysql-connector-repackaged
+```
+
+
+Windows
 On your terminal window, type:
 
 ```bash
@@ -184,4 +196,62 @@ pip install Flask
 ```
 
 
+
+
+
 ## Workshop Deployment Steps
+
+### Database Deployment
+
+MacOS:
+
+```bash
+cd catalog-db
+python deploy.py \
+	--stack_name catalog-db \
+	--db_admin_user admin \
+	--db_admin_password adminwwCode1%^%%%% \
+	--db_name catalog
+```
+
+Windows (same steps with no line breaks):
+```bash
+cd catalog-db
+python deploy.py --stack_name catalog-db --db_admin_user admin --db_admin_password adminwwCode1%^%%%% --db_name catalog
+```
+
+### Middleware Deployment
+MacOS:
+```bash
+cd catalog-middleware
+python deploy.py \
+	--stack_name catalog-middleware \
+	--db_stack_name catalog-db \
+	--db_user admin \
+	--db_password adminwwCode1%^%%%% \
+	--db_name catalog
+```
+
+Windows:
+
+```bash
+cd catalog-middleware
+python deploy.py --stack_name catalog-middleware --db_stack_name catalog-db --db_user admin --db_password adminwwCode1%^%%%% --db_name catalog
+```
+
+### Frontend Deployment
+MacOS:
+
+```bash
+cd catalog-frontend
+python deploy.py \
+	--stack_name catalog-frontend \
+	--s3_bucket_name catalog-frontend-<yourname> \
+	--middleware_stack_name catalog-middleware
+```
+
+```bash
+cd catalog-frontend
+python deploy.py --stack_name catalog-frontend --s3_bucket_name catalog-frontend-<yourname> --middleware_stack_name catalog-middleware
+```
+

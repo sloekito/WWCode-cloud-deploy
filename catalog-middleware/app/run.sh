@@ -4,4 +4,5 @@ export MYSQL_DATABASE_USER="readonly"
 export MYSQL_DATABASE_PASSWORD="readonly%%%%%%%"
 
 cd /Users/sloekito/WWCode/WWCode-cloud-deploy/catalog-middleware/app
-gunicorn app:app -b 0.0.0.0:8099
+#gunicorn app:app -b 0.0.0.0:8099
+python app.py
