@@ -182,3 +182,6 @@ https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-6.3.
 ```bash
 pip install Flask
 ```
+
+
+## Workshop Deployment Steps
