@@ -69,6 +69,7 @@ sudo pip install mysql-connector-repackaged
 
 
 Windows
+
 On your terminal window, type:
 
 ```bash
@@ -239,6 +240,13 @@ cd catalog-middleware
 python deploy.py --stack_name catalog-middleware --db_stack_name catalog-db --db_user admin --db_password adminwwCode1%^%%%% --db_name catalog
 ```
 
+ssh command (optional):
+
+```
+chmod 400 wwcode.pem
+ssh -i wwcode.pem ec2-user@<ec2-public-ip>
+```
+
 ### Frontend Deployment
 MacOS:
 
@@ -249,6 +257,8 @@ python deploy.py \
 	--s3_bucket_name catalog-frontend-<yourname> \
 	--middleware_stack_name catalog-middleware
 ```
+
+Windows
 
 ```bash
 cd catalog-frontend
