@@ -60,7 +60,7 @@ pip
 On your terminal window, type:
 
 ```bash
-pip install mysql-connector-python-rf
+pip install mysql-connector==2.1.3
 ```
 
 
@@ -80,7 +80,7 @@ On your terminal window, type:
 
 
 ```bash
-pip install awscli --upgrade --user
+pip install awscli 
 ```
 
 More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
@@ -93,6 +93,10 @@ More info: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
 1. In the navigation pane of the console, choose Users.
 
 1. Choose your IAM user name (not the check box).
+
+1. Access type, select "Programmatic Access". Click Next.
+    
+1. Set permissions, click "Create Group", Check "AdministratorAccess" and assign a group name to it (something like "admin")
 
 1. Choose the Security credentials tab and then choose Create access key.
 
