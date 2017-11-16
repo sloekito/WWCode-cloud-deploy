@@ -40,6 +40,10 @@ curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
 sudo easy_install pip
 ```
 
+Alternative:
+
+https://pip.pypa.io/en/stable/installing/
+
 ##### Windows: 
 
 Follow these instructions:
