@@ -1,5 +1,10 @@
 # WWCode Workshop: Deploying Your First Full Stack Application to the Cloud
 
+## Presentation Slides 
+
+https://s3-us-west-2.amazonaws.com/wwcode-cloud-deployment/WWCode.pptx
+
+
 ## Install Prerequisites
 
 ### AWS Free Tier Account (requires credit card to sign up)
